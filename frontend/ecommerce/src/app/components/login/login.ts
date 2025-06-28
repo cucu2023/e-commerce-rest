@@ -1,0 +1,29 @@
+import { Component } from '@angular/core';
+import { AuthService } from '../../services/auth.service';
+import { FormsModule } from '@angular/forms'; // Importamos FormsModule para usar [(ngModel)]
+@Component({
+  selector: 'app-login',
+  templateUrl: './login.html',
+  standalone: true,
+  imports: [FormsModule]  // Lo vamos a llenar pronto
+})
+export class LoginComponent {
+  username = '';
+  password = '';
+  token = '';
+
+  constructor(private authService: AuthService) {}
+
+  login() {
+    this.authService.login({ username: this.username, password: this.password })
+      .subscribe({
+        next: (res: any) => {
+          this.token = res.access;
+          console.log('Token:', this.token);
+        },
+        error: err => {
+          console.error('Error:', err);
+        }
+      });
+  }
+}
